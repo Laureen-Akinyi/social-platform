@@ -1,11 +1,11 @@
 import React from 'react'
 import { OpenNav } from './OpenNav'
-function Contact() {
+function MyPosts() {
   return (
     <div>
       <OpenNav />
-      Contact
+      My Posts
     </div>
   )
 }
-export default Contact
+export default MyPosts

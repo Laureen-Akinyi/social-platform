@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 export const Navbar = () => {
   const navigate=useNavigate()
     function handleLogout() {
-      fetch("/logout", { method: "DELETE" }).then((r) => {
+      fetch("http://127.0.0.1:3000/logout", { method: "DELETE" }).then((r) => {
         if (r.ok) {
           // setUser(null)
           navigate("/")

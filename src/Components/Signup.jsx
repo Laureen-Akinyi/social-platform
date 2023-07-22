@@ -1,42 +1,80 @@
 import { useRef, useState, useEffect } from "react";
+import axios from 'axios';
 import {  Link, useNavigate } from 'react-router-dom'
-const REGISTER_URL = '/register';
+
 const Signup = () => {
+
     const navigate=useNavigate();
+
     const userRef = useRef();
     const errRef = useRef();
-    const [user, setUser] = useState('');
+    const [user_name, setUser_name] = useState('');
     const [validName, setValidName] = useState(false);
-    const [pwd, setPwd] = useState('');
-    const [matchPwd, setMatchPwd] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-    const handleSubmit = async (e) => {
+
+    // function handleSubmit(e) {
+    //     e.preventDefault();
+        
+    //     axios.post("http://127.0.0.1:3000/register", {
+    //       user_name: user_name,
+    //       email: email,
+    //       password: password
+    //     }, {
+    //       headers: {
+    //         "Content-Type": "application/json"
+    //       }
+    //     })
+    //     .then((response) => {
+    //       if (response.status === 200) {
+    //         localStorage.setItem('user', JSON.stringify(response.data));
+    //         navigate("/login");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log({
+    //         user_name,
+    //         email,
+    //         password
+    //       });
+    //       if (error.response && error.response.data && error.response.data.errors) {
+    //         setErrors(error.response.data.errors);
+    //       }
+    //     });
+    //   }
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post("/register",
-                JSON.stringify({ user, pwd }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+            fetch("http://127.0.0.1:3000/register",{
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  user_name: user_name,
+                  email: email,
+                  password: password
+                }),
+              }
+            ).then((r) => {
+                if (r.ok) {
+                  r.json().then((user) => {
+                    console.log(JSON.stringify(r))
+                    setSuccess(true);
+                    localStorage.setItem('user', JSON.stringify(user))
+                    navigate("/login")
+                  })
+                } else {
+                  console.log({
+                    user_name,
+                    email,
+                    password
+                  })
+                  r.json().then((err) => setErrMsg(err.errors))
                 }
-            );
-            console.log(response?.data);
-            console.log(JSON.stringify(response))
-            setSuccess(true);
-            setUser('');
-            setPwd('');
-            localStorage.setItem('user', JSON.stringify(user))
-            navigate("/paywall-posts")
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username Exists');
-            } else {
-                setErrMsg('Signup Failed')
-            }
-        }
+              })
     }
     return (
         <>
@@ -52,19 +90,30 @@ const Signup = () => {
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Sign up</h1>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">
+                        <label htmlFor="user_name">
                             Username:
                         </label>
                         <input
                             type="text"
-                            id="username"
+                            id="user_name"
                             ref={userRef}
                             autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
+                            onChange={(e) => setUser_name(e.target.value)}
+                            value={user_name}
                             required
                             aria-invalid={validName ? "false" : "true"}
                             aria-describedby="uidnote"
+                        />
+                        <label htmlFor="email">
+                            Email:
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required
+                            aria-describedby="email"
                         />
                         <label htmlFor="password">
                             Password:
@@ -72,21 +121,10 @@ const Signup = () => {
                         <input
                             type="password"
                             id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
                             required
-                            aria-describedby="pwdnote"
-                        />
-                        <label htmlFor="confirm_pwd">
-                            Confirm Password:
-                        </label>
-                        <input
-                            type="password"
-                            id="confirm_pwd"
-                            onChange={(e) => setMatchPwd(e.target.value)}
-                            value={matchPwd}
-                            required
-                            aria-describedby="confirmnote"
+                            aria-describedby="passwordnote"
                         />
                         <button>Sign Up</button>
                     </form>

@@ -34,7 +34,7 @@ const Feed = ({ isAuthenticated }) => {
           </li>
         ))}
       </ul>
-      {!isAuthenticated && posts.length > 20 && <div><Link to="/paywall-posts">View More Blog Posts</Link></div>}
+      {!isAuthenticated && posts.length > 20 && <div><Link to="/register">View More Blog Posts</Link></div>}
     </div>
   );
 };

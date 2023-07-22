@@ -7,13 +7,12 @@ import Profile from "./Components/Profile";
 import MyPosts from "./Components/MyPosts";
 import Following from "./Components/Following";
 import NotFound from "./Components/NotFound";
-import Signup from './Components/signup';
+import Signup from './Components/Signup';
 import About from "./Components/About";
 import Contact from "./Components/Contact";
-import Logout from "./Components/Logout";
 import PaywallPosts from './Components/PaywallPosts';
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     id: 1,
     name: "John Doe",
@@ -24,15 +23,14 @@ function App() {
     <>
       <Router>
       <Routes>
-        <Route path="/" exact element={<Feed  isAuthenticated={isAuthenticated}/>} />
+        <Route path="/" exact element={<Feed  />} />
         <Route path="/register" element={<Signup />} />
-        <Route path="/login" element={<Login  setIsAuthenticated={setIsAuthenticated}/>} />
+        <Route path="/login" element={<Login  />} />
         <Route path="/profile" element={<Profile  user={currentUser} setCurrentUser={setCurrentUser}/>} />
         <Route path="/my-posts" element={<MyPosts />} />
         <Route path="/following" element={<Following />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/" element={<Logout />} />
         <Route path='/paywall-posts' element={<PaywallPosts />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
