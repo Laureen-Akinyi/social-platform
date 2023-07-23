@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom"
 import axios from "axios";
 import { Navbar } from "./Navbar";
-import SearchBar from "./Search";
+// import SearchBar from "./Search";
+
 const PaywallPosts = ({ isAuthenticated }) => {
+
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Fetch the first 10 posts (page 1)
         const response = await axios.get(
           "https://jsonplaceholder.typicode.com/posts?_page=1"
         );
-        // Fetch the next 9 pages (pages 2 to 10) in parallel
         const promises = Array.from({ length: 9 }, (_, index) =>
           axios.get(`https://jsonplaceholder.typicode.com/posts?_page=${index + 2}`)
         );
-        // Wait for all promises to resolve and combine the results
         const nextPageResponses = await Promise.all(promises);
         const nextPagePosts = nextPageResponses.flatMap((res) => res.data);
-        // Combine all posts (first page + next 9 pages) to get 100 posts
         setPosts([...response.data, ...nextPagePosts]);
       } catch (error) {
         setError("Error fetching posts.");
@@ -34,15 +34,26 @@ const PaywallPosts = ({ isAuthenticated }) => {
   return (
     <div>
         <Navbar />
-        <SearchBar 
+        {/* <SearchBar 
             search={search}
             setSearch={setSearch}
-        />
+        /> */}
       <ul>
         {posts.map((post) => (
           <li className="item" key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
+            <Link to={`/post/${post.id}`}>
+              <h3 style={{color: "black"}}>
+                {(post.title).length <=10
+                    ? post.title
+                    : `${(post.title).slice(0,10)}...`
+                }
+              </h3>
+            </Link>
+            <p className="postBody">{
+                (post.body).length <= 25
+                    ? post.body
+                    : `${(post.body).slice(0, 25)}...`
+            }</p>
           </li>
         ))}
       </ul>

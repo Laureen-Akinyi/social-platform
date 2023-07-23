@@ -1,36 +1,32 @@
 // Feed.jsx
-import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom"
 import { OpenNav } from "./OpenNav";
-const Feed = ({ isAuthenticated }) => {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts"
-        );
-        setPosts(response.data);
-      } catch (error) {
-        setError("Error fetching posts.");
-      }
-    };
-    fetchPosts();
-  }, []);
+
+const Feed = ({ isAuthenticated, posts, error, setError, setPosts }) => {
+  
   if (error) {
     return <div>{error}</div>;
   }
   return (
     <div>
       <OpenNav />
-      <h2>Feed</h2>
+      <h2 style={{color: "white"}}>Feed</h2>
       <ul>
         {posts.slice(0, isAuthenticated ? 100 : 20).map((post) => (
           <li className="item" key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
+            <Link to={`/post/${post.id}`}>
+              <h3 style={{color: "black"}}>
+                {(post.title).length <=10
+                    ? post.title
+                    : `${(post.title).slice(0,10)}...`
+                }
+              </h3>
+            </Link>
+            <p className="postBody">{
+                (post.body).length <= 25
+                    ? post.body
+                    : `${(post.body).slice(0, 25)}...`
+            }</p>
           </li>
         ))}
       </ul>

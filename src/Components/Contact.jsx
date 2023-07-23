@@ -2,9 +2,12 @@ import React from 'react'
 import { OpenNav } from './OpenNav'
 function Contact() {
   return (
-    <div>
+    <div >
       <OpenNav />
-      Contact
+      <h2 className='About'>
+        Contact
+      </h2>
+      
     </div>
   )
 }

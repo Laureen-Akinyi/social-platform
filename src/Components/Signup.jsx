@@ -14,40 +14,10 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-
-    // function handleSubmit(e) {
-    //     e.preventDefault();
-        
-    //     axios.post("http://127.0.0.1:3000/register", {
-    //       user_name: user_name,
-    //       email: email,
-    //       password: password
-    //     }, {
-    //       headers: {
-    //         "Content-Type": "application/json"
-    //       }
-    //     })
-    //     .then((response) => {
-    //       if (response.status === 200) {
-    //         localStorage.setItem('user', JSON.stringify(response.data));
-    //         navigate("/login");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log({
-    //         user_name,
-    //         email,
-    //         password
-    //       });
-    //       if (error.response && error.response.data && error.response.data.errors) {
-    //         setErrors(error.response.data.errors);
-    //       }
-    //     });
-    //   }
     
     const handleSubmit = (e) => {
         e.preventDefault();
-            fetch("http://127.0.0.1:3000/register",{
+            fetch("https://social-platform-pozp.onrender.com/register",{
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json"
